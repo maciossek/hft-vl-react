@@ -1,0 +1,426 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>HFT IPR #10 React & ReactNative</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/custom.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/atom-one-dark.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background-size="cover" data-background-image="https://media.giphy.com/media/ZsQVh4CykCXUQ/giphy.gif">
+					<h1 class="title">IPR</h1>
+					<h3 class="title">React</h3>
+				</section>
+				<section>
+					<section>
+						<h3>Allgemeines React</h3>
+						<ul>
+							<li>Single Page Application (SPA)</li>
+							<li>Von Facebook als OpenSource zu Verfügung gestellt</li>
+							<li>Benötigt JSX</li>
+							<li>"React is a declarative, efficient, and flexible JavaScript library for building user interfaces."</li>
+						</ul>
+					</section>
+					<section>
+						<h3>React 👍</h3>
+						<ul>
+							<li>Nur für die View verantwortlich</li>
+							<li>Sehr kleine Library ~ 132kB</li>
+							<li>Technologie von Facebook: Weiterentwicklung gewährleistet</li>
+						</ul>
+					</section>
+					<section>
+						<h3>React 👎</h3>
+						<ul>
+							<li>Andere Libraries notwendig</li>
+							<li>JSX Pflicht</li>
+							<li>Aufteilung innerhalb schon auf React und ReactDOM</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>Let's React</h3>
+						<pre><code class="bash" data-trim data-noescape>
+							npm install -g create-react-app
+							create-react-app my-app
+						</code></pre>
+						</section>
+						<section>
+							<h3>React Components</h3>
+							<pre><code class="jsx" data-trim>
+								class ShoppingList extends React.Component {
+								  render() {
+								    return (
+								      <div className="shopping-list">
+								        <h1>Shopping List for {this.props.name}</h1>
+								        <ul>
+								          <li>Instagram</li>
+								          <li>WhatsApp</li>
+								          <li>Oculus</li>
+								        </ul>
+								      </div>
+								    );
+								  }
+								}
+							</code></pre>
+						</section>
+						<section>
+							<h3>Die Daten mit Hilfe von Props übergeben</h3>
+							<pre><code class="jsx" data-trim data-noescape>
+                class Board extends React.Component {
+                  renderSquare(i) {
+                    return &lt;Square value={i} /&gt;;
+                  }
+                }
+							</code></pre>
+
+							<pre><code class="jsx" data-trim>
+								class Square extends React.Component {
+								  render() {
+								    return (
+								      <button className="square">
+								        {this.props.value}
+								      </button>
+								    );
+								  }
+								}
+							</code></pre>
+						</section>
+						<section>
+							<h3>Komponenten mit eigenem State</h3>
+							<pre><code class="js" data-trim>
+								class Square extends React.Component {
+								  constructor(props) {
+								    super(props);
+								    this.state = {
+								      value: null,
+								    };
+								  }
+
+								  render() {
+								    return (
+								      <button className="square" onClick={() => alert('click')}>
+								        {this.props.value}
+								      </button>
+								    );
+								  }
+								}
+							</code></pre>
+						</section>
+						<section>
+							<h3>Komponenten mit eigenem State</h3>
+							<pre><code class="js" data-trim>
+								class Square extends React.Component {
+								  constructor(props) {
+								    super(props);
+								    this.state = {
+								      value: null,
+								    };
+								  }
+
+								  render() {
+								    return (
+								      <button className="square" onClick={() => this.setState({value: 'X'})}>
+								        {this.state.value}
+								      </button>
+								    );
+								  }
+								}
+							</code></pre>
+						</section>
+            <section>
+              Sobald <code>this.setState</code> aufgerufen wird, wird ein Update der Komponente geplant. Das führt dazu, dass React den neuen State mit Komponente (sowie dessen Kinder) zusammenführt und neu rendert.
+            </section>
+            <section>
+              <p data-height="500" data-theme-id="0" data-slug-hash="gWWQPY" data-default-tab="js,result" data-user="gaearon" data-embed-version="2" data-pen-title="Tic Tac Toe" data-preview="true" class="codepen">See the Pen <a href="https://codepen.io/gaearon/pen/gWWQPY/">Tic Tac Toe</a> by Dan Abramov (<a href="https://codepen.io/gaearon">@gaearon</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+            </section>
+						<section>
+							<h3>Den State nach "oben schieben"</h3>
+							<pre><code class="jsx" data-trim>
+	class Board extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        squares: Array(9).fill(null),
+      };
+    }
+
+    renderSquare(i) {
+      return &lt;Square value={i} onClick={() => this.handleClick(i)} /&gt;;
+    }
+
+    render() {
+      const status = 'Next player: X';
+
+      return (
+        <div>
+          <div className="status">{status}</div>
+          <div className="board-row">
+            {this.renderSquare(0)}
+            {this.renderSquare(1)}
+            {this.renderSquare(2)}
+          </div>
+          <div className="board-row">
+            {this.renderSquare(3)}
+            {this.renderSquare(4)}
+            {this.renderSquare(5)}
+          </div>
+          <div className="board-row">
+            {this.renderSquare(6)}
+            {this.renderSquare(7)}
+            {this.renderSquare(8)}
+          </div>
+        </div>
+      );
+    }
+  }
+							</code></pre>
+						</section>
+						<section>
+              <small>Die Square Komponente soll jetzt noch die Property value erhalten: </small>
+							<pre><code class="jsx" data-trim data-noescape>
+renderSquare(i) {
+  return &lt;Square value={this.state.squares[i]} /&gt;;
+}
+							</code></pre>
+						</section>
+            <section>
+              <small>Damit der State der Kind-Komponente Square den Parent State des Boards beeinflussen kann, wird eine Methode von Board nach unten weitergereicht</small>
+              <pre><code class="jsx" data-trim data-noescape>
+renderSquare(i) {
+  return (
+    &lt;Square
+      value={this.state.squares[i]}
+      onClick={() => this.handleClick(i)}
+    /&gt;
+  );
+}
+              </code></pre>
+            </section>
+            <section>
+              <small>So sieht dann unsere Square Komponente aus</small>
+              <pre><code class="jsx" data-trim>
+class Square extends React.Component {
+  render() {
+    return (
+      <button className="square" onClick={() => this.props.onClick()}>
+        {this.props.value}
+      </button>
+    );
+  }
+}
+              </code></pre>
+            </section>
+            <section>
+              <small>Jetzt fehlt nur noch die handleClick Methode</small>
+              <pre><code class="jsx" data-trim>
+handleClick(i) {
+  const squares = this.state.squares.slice();
+  squares[i] = 'X';
+  this.setState({squares: squares});
+}
+              </code></pre>
+            </section>
+						<section>
+							<p data-height="500" data-theme-id="0" data-slug-hash="VbbVLg" data-default-tab="js,result" data-user="gaearon" data-embed-version="2" data-pen-title="Tic Tac Toe" data-preview="true" class="codepen">See the Pen <a href="https://codepen.io/gaearon/pen/VbbVLg/">Tic Tac Toe</a> by Dan Abramov (<a href="https://codepen.io/gaearon">@gaearon</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+						</section>
+            <section>
+              <h3>Immutability (Unveränderlichkeit)</h3>
+              <ul>
+                <li>Einfacheres Undo / Redo mit Zeitreise</li>
+                <li>Änderungen mitverfolgen</li>
+                <li>Erneutes Rendern steuern</li>
+              </ul>
+            </section>
+            <section>
+              <h3>Functional Components</h3>
+              <pre><code class="jsx" data-trim>
+function Square(props) {
+  return (
+    <button className="square" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
+}
+              </code></pre>
+            </section>
+            <section>
+              <h3>Einen zweiten Spieler hinzufügen</h3>
+              <pre><code class="jsx" data-trim>
+class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null),
+      xIsNext: true,
+    };
+  }
+
+  handleClick(i) {
+    const squares = this.state.squares.slice();
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      squares: squares,
+      xIsNext: !this.state.xIsNext,
+    });
+  }
+
+  renderSquare(i) {
+    return (
+      &lt;Square
+        value={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      /&gt;
+    );
+  }
+
+  render() {
+    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+
+    return (
+      <div>
+        <div className="status">{status}</div>
+        <div className="board-row">
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(3)}
+          {this.renderSquare(4)}
+          {this.renderSquare(5)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(6)}
+          {this.renderSquare(7)}
+          {this.renderSquare(8)}
+        </div>
+      </div>
+    );
+  }
+}
+              </code></pre>
+            </section>
+					</section>
+          <section>
+            <section>
+              <h3>React Native</h3>
+            </section>
+            <section>
+              <h3>Allgemeines React Native</h3>
+            <ul>
+              <li>"Build native mobile apps using JavaScript and React"</li>
+              <li>Basierend auf React</li>
+              <li>Eine <strong>ECHTE</strong> native mobile App</li>
+              <li>Nativen Code mitverwenden (Swift, Objective-C, Java)</li>
+              <li>Alternativen: Xamarin, Ionic, NativeScript</li>
+            </ul>
+          </section>
+          <section>
+            <h3>React Native 👍</h3>
+            <ul>
+              <li>Wer React versteht und programmiert, tut sich mit React Native leicht</li>
+              <li>Kein Obj-C, Java oder Swift Code notwenidig</li>
+              <li>Cross Compile zu Android und iOS</li>
+              <li>Business Logik kann zwischen React und React Native geteilt werden</li>
+              <li>Wird schon produktiv verwendet (AirBnB, Skype, Tesla, Instagram, usw.)</li>
+            </ul>
+          </section>
+          <section>
+            <h3>React Native 👎</h3>
+            <ul>
+              <li>Immernoch Beta v0.51</li>
+              <li>Hinkt den aktuellen Nativen SDKs immer hinterher</li>
+            </ul>
+          </section>
+				</section>
+        <section>
+          <section>
+          <h3>Let's React Native</h3>
+          <pre><code class="bash" data-trim data-noescape>
+            npm install -g create-react-native-app
+            create-react-native-app AwesomeProject
+
+            cd AwesomeProject
+            npm start
+          </code></pre>
+          </section>
+          <section>
+          <h3>React Native Einstieg</h3>
+          <pre><code class="js" data-trim>
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>Open up App.js to start working on your app!</Text>
+        <Text>Changes you make will automatically reload.</Text>
+        <Text>Shake your phone to open the developer menu.</Text>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+          </code></pre>
+          </section>
+        </section>
+				<section>
+					<h2>Weitere Links</h2>
+					<ul>
+						<li><a href="https://reactjs.org/tutorial/tutorial.html" target="_blank">React Tutorial</a></li>
+            <li><a href="https://facebook.github.io/react-native/docs/getting-started.html" target="_blank">React Native Docs</a></li>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			Reveal.initialize({
+				backgroundTransition: 'slide',
+        slideNumber: true,
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
+transition
