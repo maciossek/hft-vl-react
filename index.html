@@ -42,6 +42,11 @@
 						</ul>
 					</section>
 					<section>
+						<script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/1225_RC05/embed_loader.js"></script>
+						<script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"angular","geo":"","time":"today 12-m"},{"keyword":"react","geo":"","time":"today 12-m"},{"keyword":"vuejs","geo":"","time":"today 12-m"},{"keyword":"polymer","geo":"","time":"today 12-m"},{"keyword":"jQuery","geo":"","time":"today 12-m"}],"category":13,"property":""}, {"exploreQuery":"cat=13&q=angular,react,vuejs,polymer,jQuery&date=today 12-m,today 12-m,today 12-m,today 12-m,today 12-m","guestPath":"https://trends.google.com:443/trends/embed/"});
+						</script>
+					</section>
+					<section>
 						<h3>React 👍</h3>
 						<ul>
 							<li>Nur für die View verantwortlich</li>
@@ -109,7 +114,7 @@
 						</section>
 						<section>
 							<h3>Komponenten mit eigenem State</h3>
-							<pre><code class="js" data-trim>
+							<pre><code class="js" data-trim data-noescape>
 								class Square extends React.Component {
 								  constructor(props) {
 								    super(props);
@@ -120,9 +125,9 @@
 
 								  render() {
 								    return (
-								      <button className="square" onClick={() => alert('click')}>
+								      &lt;button className="square" onClick={() => alert('click')}&gt;
 								        {this.props.value}
-								      </button>
+								      &lt;/button&gt;
 								    );
 								  }
 								}
@@ -130,7 +135,7 @@
 						</section>
 						<section>
 							<h3>Komponenten mit eigenem State</h3>
-							<pre><code class="js" data-trim>
+							<pre><code class="js" data-trim data-noescape>
 								class Square extends React.Component {
 								  constructor(props) {
 								    super(props);
@@ -141,9 +146,9 @@
 
 								  render() {
 								    return (
-								      <button className="square" onClick={() => this.setState({value: 'X'})}>
+								      &lt;button className="square" onClick={() => this.setState({value: 'X'})}&gt;
 								        {this.state.value}
-								      </button>
+								      &lt;/button&gt;
 								    );
 								  }
 								}
@@ -220,13 +225,13 @@ renderSquare(i) {
             </section>
             <section>
               <small>So sieht dann unsere Square Komponente aus</small>
-              <pre><code class="jsx" data-trim>
+              <pre><code class="js" data-trim data-noescape>
 class Square extends React.Component {
   render() {
     return (
-      <button className="square" onClick={() => this.props.onClick()}>
+      &lt;button className="square" onClick={() => this.props.onClick()}&gt;
         {this.props.value}
-      </button>
+      &lt;/button&gt;
     );
   }
 }
@@ -234,7 +239,7 @@ class Square extends React.Component {
             </section>
             <section>
               <small>Jetzt fehlt nur noch die handleClick Methode</small>
-              <pre><code class="jsx" data-trim>
+              <pre><code class="js" data-trim>
 handleClick(i) {
   const squares = this.state.squares.slice();
   squares[i] = 'X';
@@ -255,12 +260,12 @@ handleClick(i) {
             </section>
             <section>
               <h3>Functional Components</h3>
-              <pre><code class="jsx" data-trim>
+              <pre><code class="js" data-trim data-noescape>
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick}>
+    &lt;button className="square" onClick={props.onClick}&gt;
       {props.value}
-    </button>
+    &lt;/button&gt;
   );
 }
               </code></pre>
@@ -368,18 +373,18 @@ class Board extends React.Component {
           </section>
           <section>
           <h3>React Native Einstieg</h3>
-          <pre><code class="js" data-trim>
+          <pre><code class="jsx" data-trim>
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+      &lt;View style={styles.container}&gt;
+        &lt;Text>Open up App.js to start working on your app!&lt;/Text&gt;
+        &lt;Text>Changes you make will automatically reload.&lt;/Text&gt;
+        &lt;Text>Shake your phone to open the developer menu.&lt;/Text&gt;
+      &lt;/View&gt;
     );
   }
 }
